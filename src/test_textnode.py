@@ -1,6 +1,14 @@
 import unittest
 
-from textnode import TextNode
+from textnode import (
+     TextNode,
+    text_type_text,
+    text_type_bold,
+    text_type_italic,
+    text_type_code,
+    text_type_image,
+    text_type_link,
+)
 
 
 class TestTextNode(unittest.TestCase):
@@ -10,8 +18,8 @@ class TestTextNode(unittest.TestCase):
         self.assertEqual(node, node2)
 
     def test_eq_url(self):
-        node3 = TextNode("This is a Node", "underlined", "http://website.xyz")
-        node4 = TextNode("This is a Node", "underlined", "http://website.xyz")
+        node3 = TextNode("This is a Node", text_type_code, "http://website.xyz")
+        node4 = TextNode("This is a Node", text_type_code, "http://website.xyz")
         self.assertEqual(node3, node4)
     
     def test_eq_v2(self):
@@ -20,8 +28,8 @@ class TestTextNode(unittest.TestCase):
         self.assertEqual(node5, node6)
     
     def test_nteq(self):
-        node7 = ("This is a Node", "underlined", "http://website.xyz")
-        node8 = ("This is a Node", "underlined", "http://notawebsite.xyz")
+        node7 = ("This is a Node", text_type_bold, "http://website.xyz")
+        node8 = ("This is a Node", text_type_link, "http://notawebsite.xyz")
         self.assertNotEqual(node7, node8)
 
     def test_num(self):

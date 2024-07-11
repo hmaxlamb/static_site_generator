@@ -1,13 +1,12 @@
 #Creats textnode class for static site gen
 
 class TextNode:
-    def __init__(self, text, text_type, url):
+    def __init__(self, text, text_type, url = None):
         self.text = text
         self.text_type = text_type
-        if len(url) > 0:
-            self.url = url
-        else:
-            self.url = None
+        self.url = url
+
+
 #Checks if the textnode itself and another are equal
 
     def __eq__(self, other_node):

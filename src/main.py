@@ -1,4 +1,7 @@
+from textnode import TextNode
+
 def main():
-    print("hello world")
+    testnode = TextNode("This is a test", "Bold", "www.test.example.com")
+    print(testnode.__repr__())
 
 main()

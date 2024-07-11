@@ -18,6 +18,21 @@ class TestTextNode(unittest.TestCase):
         node5 = TextNode("This is a Node", "underlined", "")
         node6 = TextNode("This is a Node", "underlined", "")
         self.assertEqual(node5, node6)
+    
+    def test_nteq(self):
+        node7 = ("This is a Node", "underlined", "http://website.xyz")
+        node8 = ("This is a Node", "underlined", "http://notawebsite.xyz")
+        self.assertNotEqual(node7, node8)
+
+    def test_num(self):
+        node9 = ("This is a Node", 7, "http://website.xyz")
+        node10 = ("This is a Node", 7, "http://website.xyz")
+        self.assertEqual(node9, node10)
+
+    def test_none(self):
+        node11 = ("This is a Node", 7, None)
+        node12 = ("This is a Node", 7, None)
+        self.assertEqual(node11, node12)
 
 
 

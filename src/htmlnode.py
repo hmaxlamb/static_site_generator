@@ -13,7 +13,7 @@ class HTMLNode:
     def props_to_html(self):
         return_string = f""
         for key in self.props:
-            return_string = return_string + f"{key}={self.props[key]} "
+            return_string = return_string + f'''{key}="{self.props[key]}" '''
         if len(return_string) > 1:
             return_string = return_string[:-1]
         return return_string
@@ -21,6 +21,7 @@ class HTMLNode:
     def __repr__(self):
         return f"{self.tag}, {self.value}, {self.children}, {self.props}"
     
-    
+prop_var = {"href": "https://www.google.com", "target": "_blank"}
+
     
 

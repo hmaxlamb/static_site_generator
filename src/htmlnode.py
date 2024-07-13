@@ -21,7 +21,9 @@ class HTMLNode:
     def __repr__(self):
         return f"{self.tag}, {self.value}, {self.children}, {self.props}"
     
-prop_var = {"href": "https://www.google.com", "target": "_blank"}
+
+    
+
 
     
 

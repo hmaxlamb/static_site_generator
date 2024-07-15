@@ -1,5 +1,3 @@
-
-
 class HTMLNode:
     def __init__(self, tag = None, value = None, children = None, props = None):
         self.tag = tag
@@ -23,7 +21,7 @@ class HTMLNode:
     
 
 class LeafNode(HTMLNode):
-    def __init__(self, tag, value, props = None)
+    def __init__(self, tag, value, props = None):
         super.__init__(tag, value, None, props)
         if self.value == None:
             raise ValueError("No value for 'value' found")
@@ -37,9 +35,3 @@ class LeafNode(HTMLNode):
     
     def __repr__(self):
         return f"LeafNode({self.tag}, {self.value}, {self.props})"
-
-    
-
-
-    
-

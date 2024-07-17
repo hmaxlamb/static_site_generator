@@ -1,7 +1,8 @@
 import unittest
 
 from textnode import (
-     TextNode,
+    TextNode,
+    text_node_to_html_node,
     text_type_text,
     text_type_bold,
     text_type_italic,
@@ -15,6 +16,7 @@ from htmlnode import(
     LeafNode,
     ParentNode
 )
+
 
 class TestTextNode(unittest.TestCase):
     def test_eq(self):
@@ -56,6 +58,13 @@ class TestTextNode(unittest.TestCase):
         ])
         correct_string = "<p><b>Bold text</b>Normal text<i>italic text</i>Normal text</p>"
         self.assertEqual(parentnode1.to_html(), correct_string)
+
+    def test_text_to_html_text(self):
+        node14 = LeafNode(None, "this is a test")
+        node15 = text_node_to_html_node(TextNode("this is a test", "text"))
+        self.assertEqual(node14.tag, node15.tag)
+        self.assertEqual(node14.value, node15.value)
+
 
 
 if __name__ == "__main__":

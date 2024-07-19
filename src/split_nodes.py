@@ -20,7 +20,7 @@ def split_node_delimiter(old_nodes, delimiter, text_type_del):
         new_node_list.extend([
             TextNode(split_text[0], text_type_text),
             TextNode(split_text[1], text_type_del),
-            TextNode(split_text[3], text_type_text),
+            TextNode(split_text[2], text_type_text),
         ])
     return new_node_list
 

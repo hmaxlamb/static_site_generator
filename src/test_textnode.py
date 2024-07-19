@@ -17,6 +17,10 @@ from htmlnode import(
     ParentNode
 )
 
+from split_nodes import(
+    split_node_delimiter
+)
+
 
 class TestTextNode(unittest.TestCase):
     def test_eq(self):
@@ -64,6 +68,15 @@ class TestTextNode(unittest.TestCase):
         node15 = text_node_to_html_node(TextNode("this is a test", "text"))
         self.assertEqual(node14.tag, node15.tag)
         self.assertEqual(node14.value, node15.value)
+
+    def test_split_node1(self):
+        node16 = TextNode("This is text with a `code block` word", text_type_text)
+        new_nodes = split_node_delimiter([node16], "`", text_type_code)
+        self.assertEqual(new_nodes, [
+            TextNode("This is text with a ", text_type_text),
+            TextNode("code block", text_type_code),
+            TextNode(" word", text_type_text),
+        ])
 
 
 

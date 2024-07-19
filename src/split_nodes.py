@@ -8,6 +8,7 @@ from textnode import (
     TextNode
 )
 
+import re
 
 def split_node_delimiter(old_nodes, delimiter, text_type_del):
     new_node_list = []
@@ -28,3 +29,7 @@ def split_node_delimiter(old_nodes, delimiter, text_type_del):
         new_node_list.extend(split_node)
     return new_node_list
 
+def extract_markdown_images(text):
+    return re.findall(r"!\[(.*?)\]\((.*?)\)", text)
+    
+        

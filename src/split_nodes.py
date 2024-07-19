@@ -15,12 +15,12 @@ def split_node_delimiter(old_nodes, delimiter, text_type_del):
         if node.text_type != text_type_text:
             new_node_list.append(node)
         split_text = node.text.split(delimiter)
-        if split_text == node.text:
+        if split_text[0] == node.text:
             raise ValueError("Invalid delimiter")
         new_node_list.extend([
-            TextNode(split_text[0], text_type_text)
-            TextNode(split_text[1], text_type_del)
-            TextNode(split_text[3], text_type_text)
+            TextNode(split_text[0], text_type_text),
+            TextNode(split_text[1], text_type_del),
+            TextNode(split_text[3], text_type_text),
         ])
     return new_node_list
 

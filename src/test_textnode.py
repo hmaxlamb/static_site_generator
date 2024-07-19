@@ -19,7 +19,8 @@ from htmlnode import(
 
 from split_nodes import(
     split_node_delimiter,
-    extract_markdown_images
+    extract_markdown_images,
+    extract_markdown_links,
 )
 
 
@@ -83,6 +84,11 @@ class TestTextNode(unittest.TestCase):
         text = "This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)"
         extracted_list = [("rick roll", "https://i.imgur.com/aKaOqIh.gif"), ("obi wan", "https://i.imgur.com/fJRm4Vk.jpeg")]
         self.assertEqual(extracted_list, extract_markdown_images(text))
+
+    def test_image_spliter(self):
+        text = "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)"        
+        extracted_list = [("to boot dev", "https://www.boot.dev"), ("to youtube", "https://www.youtube.com/@bootdotdev")]
+        self.assertEqual(extract_markdown_links(text), extracted_list)
 
 
 

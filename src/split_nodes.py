@@ -9,7 +9,7 @@ from textnode import (
 )
 
 
-def split_node_delimiter(old_nodes, delimiter, text_type):
+def split_node_delimiter(old_nodes, delimiter, text_type_del):
     new_node_list = []
     for node in old_nodes:
         if node.text_type != text_type_text:
@@ -19,6 +19,8 @@ def split_node_delimiter(old_nodes, delimiter, text_type):
             raise ValueError("Invalid delimiter")
         new_node_list.extend([
             TextNode(split_text[0], text_type_text)
-            TextNode(split_text[1], text_type)
+            TextNode(split_text[1], text_type_del)
             TextNode(split_text[3], text_type_text)
         ])
+    return new_node_list
+

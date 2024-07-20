@@ -21,6 +21,8 @@ from split_nodes import(
     split_node_delimiter,
     extract_markdown_images,
     extract_markdown_links,
+    split_node_images,
+    split_node_link,
 )
 
 
@@ -89,6 +91,21 @@ class TestTextNode(unittest.TestCase):
         text = "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)"        
         extracted_list = [("to boot dev", "https://www.boot.dev"), ("to youtube", "https://www.youtube.com/@bootdotdev")]
         self.assertEqual(extract_markdown_links(text), extracted_list)
+    
+    def split_node_links_test(self):
+        node = TextNode(
+            "This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)",
+            text_type_text,
+        )
+        new_node_list = [
+            TextNode("This is text with a link ", text_type_text),
+            TextNode("to boot dev", text_type_link, "https://www.boot.dev"),
+            TextNode(" and ", text_type_text),
+            TextNode(
+                "to youtube", text_type_link, "https://www.youtube.com/@bootdotdev"     
+            ),]
+        self.assertEqual(new_node_list, split_node_link([node]))
+
 
 
 

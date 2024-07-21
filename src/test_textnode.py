@@ -105,10 +105,23 @@ class TestTextNode(unittest.TestCase):
                 "to youtube", text_type_link, "https://www.youtube.com/@bootdotdev"     
             ),]
         self.assertEqual(new_node_list, split_node_link([node]))
-
-
-
-
+    
+    def split_node_image_test(self):
+        node = TextNode(
+            "This is text with a link ![to boot dev](https://www.boot.dev) and ![to youtube](https://www.youtube.com/@bootdotdev)",
+            text_type_text,
+        )
+        new_node_list = [
+            TextNode("This is text with a link ", text_type_text),
+            TextNode("to boot dev", text_type_image, "https://www.boot.dev"),
+            TextNode(" and ", text_type_image),
+            TextNode(
+                "to youtube", text_type_link, "https://www.youtube.com/@bootdotdev"     
+            ),]
+        self.assertEqual(new_node_list, split_node_images([node]))
+        
+        
+        
 if __name__ == "__main__":
     unittest.main()
 

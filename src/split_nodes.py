@@ -35,63 +35,80 @@ def extract_markdown_images(text):
 def extract_markdown_links(text):
     return re.findall(r"\[(.*?)\]\((.*?)\)", text)
 
-def split_node_images(old_nodes):
+def split_node_image(old_nodes):
     return_list = []
     for node in old_nodes:
-        pair_array = extract_markdown_images[node.text]
-        for i in range(pair_array):
+        pair_array = extract_markdown_images(node.text)
+        for i in range(len(pair_array)):
             if i == 0:
                 sections = []
-                sections = node.text.split((f"![{pair_array[i][0]}]({pair_array[i][1]})", 1))
+                sections = node.text.split(f"![{pair_array[i][0]}]({pair_array[i][1]})", 1)
                 new_array = [
                     TextNode(sections[0], text_type_text),
+                    TextNode(pair_array[i][0], text_type_image, pair_array[i][1])
+                ]
+            elif i != len(pair_array) - 1 and i != 0:
+                sections = []
+                sections = node.text.split(f"![{pair_array[i][0]}]({pair_array[i][1]})", 1)
+                text_before = sections[0].split(f"![{pair_array[(i-1)][0]}]({pair_array[(i-1)][1]})", 1)
+                new_array = [
+                    TextNode(text_before[1], text_type_text),
                     TextNode(pair_array[i][0], text_type_image, pair_array[i][1])
                 ]
             else:
                 sections = []
                 sections = node.text.split(f"![{pair_array[i][0]}]({pair_array[i][1]})", 1)
-                text_before = sections[0].split(f"![{pair_array[i-1][0]}]({pair_array[i-1][1]})")
-                new_array = [
-                    TextNode(text_before[2], text_type_text),
+                text_before = sections[0].split(f"![{pair_array[i-1][0]}]({pair_array[i-1][1]})", 1)
+                if len(sections) == 2 and sections[1] != "":
+                    new_array = [
+                    TextNode(text_before[1], text_type_text),
+                    TextNode(pair_array[i][0], text_type_image, pair_array[i][1]),
+                    TextNode(sections[1], text_type_text)
+                ]
+                else:
+                    new_array = [
+                    TextNode(text_before[1], text_type_text),
                     TextNode(pair_array[i][0], text_type_image, pair_array[i][1])
                 ]
             return_list.extend(new_array)
-    return return_list  
+    return return_list 
 
 def split_node_link(old_nodes):
     return_list = []
     for node in old_nodes:
-        pair_array = extract_markdown_links[node.text]
-        for i in range(pair_array):
+        pair_array = extract_markdown_links(node.text)
+        for i in range(len(pair_array)):
             if i == 0:
                 sections = []
-                sections = node.text.split((f"[{pair_array[i][0]}]({pair_array[i][1]})", 1))
+                sections = node.text.split(f"[{pair_array[i][0]}]({pair_array[i][1]})", 1)
                 new_array = [
                     TextNode(sections[0], text_type_text),
-                    TextNode(pair_array[i][0], text_type_image, pair_array[i][1])
+                    TextNode(pair_array[i][0], text_type_link, pair_array[i][1])
                 ]
-            if i != len(pair_array) - 1:
+            elif i != len(pair_array) - 1 and i != 0:
                 sections = []
                 sections = node.text.split(f"[{pair_array[i][0]}]({pair_array[i][1]})", 1)
                 text_before = sections[0].split(f"[{pair_array[(i-1)][0]}]({pair_array[(i-1)][1]})", 1)
                 new_array = [
-                    TextNode(text_before[2], text_type_text),
-                    TextNode(pair_array[i][0], text_type_image, pair_array[i][1])
+                    TextNode(text_before[1], text_type_text),
+                    TextNode(pair_array[i][0], text_type_link, pair_array[i][1])
                 ]
             else:
                 sections = []
                 sections = node.text.split(f"[{pair_array[i][0]}]({pair_array[i][1]})", 1)
-                text_before = sections[0].split(f"[{pair_array[i-1][0]}]({pair_array[i-1][1]})")
-                if len(sections) == 3:
+                text_before = sections[0].split(f"[{pair_array[i-1][0]}]({pair_array[i-1][1]})", 1)
+                print(len(sections))
+                print(sections)
+                if len(sections) == 2 and sections[1] != "":
                     new_array = [
-                    TextNode(text_before[2], text_type_text),
-                    TextNode(pair_array[i][0], text_type_image, pair_array[i][1]),
-                    TextNode(sections[2], text_type_text)
+                    TextNode(text_before[1], text_type_text),
+                    TextNode(pair_array[i][0], text_type_link, pair_array[i][1]),
+                    TextNode(sections[1], text_type_text)
                 ]
                 else:
                     new_array = [
-                    TextNode(text_before[2], text_type_text),
-                    TextNode(pair_array[i][0], text_type_image, pair_array[i][1])
+                    TextNode(text_before[1], text_type_text),
+                    TextNode(pair_array[i][0], text_type_link, pair_array[i][1])
                 ]
             return_list.extend(new_array)
-    return return_list        
+    return return_list  

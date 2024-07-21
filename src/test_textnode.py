@@ -21,7 +21,7 @@ from split_nodes import(
     split_node_delimiter,
     extract_markdown_images,
     extract_markdown_links,
-    split_node_images,
+    split_node_image,
     split_node_link,
 )
 
@@ -118,7 +118,7 @@ class TestTextNode(unittest.TestCase):
             TextNode(
                 "to youtube", text_type_link, "https://www.youtube.com/@bootdotdev"     
             ),]
-        self.assertEqual(new_node_list, split_node_images([node]))
+        self.assertEqual(new_node_list, split_node_image([node]))
         
         
         

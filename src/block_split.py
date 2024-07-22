@@ -30,10 +30,16 @@ def block_to_block_type(block):
             else:
                 heading = "#" + heading
     
-    if block[:3] == "```" and block[-3:]:
+    if block[:3] == "```" and block[-3:] == "```":
         return "code"
     
-    if block[:1] == ">":
+    if block [:1] == ">":
+        split_blocks = block.split("\n")
+        for line in split_blocks:
+            if line[:1] == ">":
+                continue
+            else:
+                return "paragraph"
         return "quote"
     
     if block [:2] == "* ":

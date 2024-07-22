@@ -70,6 +70,25 @@ class TestBlockType(unittest.TestCase):
         block = "####### Hello"
         self.assertEqual("paragraph", block_to_block_type(block))
 
+    def test_block_to_block_quote1(self):
+        block = "> ahhhh\n> ahhhhh\n> eeeeeee"
+        self.assertEqual("quote", block_to_block_type(block))
+    
+    def test_block_to_block_quote2(self):
+        block = "> ahhhh\n> ahhhhh\n eeeeeee"
+        self.assertEqual("paragraph", block_to_block_type(block))
+
+    def test_block_to_block_para(self):
+        block = "sdfgksjdhgpwoshg"
+        self.assertEqual("paragraph", block_to_block_type(block))
+
+    def test_block_to_block_code1(self):
+        block = "``` sdfgksjdhgpwoshg ```"
+        self.assertEqual("code", block_to_block_type(block))
+    
+    def test_block_to_block_code2(self):
+        block = "``` sdfgksjdhgpwoshg ``"
+        self.assertEqual("paragraph", block_to_block_type(block))
 
 
     

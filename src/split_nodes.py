@@ -97,8 +97,6 @@ def split_node_link(old_nodes):
                 sections = []
                 sections = node.text.split(f"[{pair_array[i][0]}]({pair_array[i][1]})", 1)
                 text_before = sections[0].split(f"[{pair_array[i-1][0]}]({pair_array[i-1][1]})", 1)
-                print(len(sections))
-                print(sections)
                 if len(sections) == 2 and sections[1] != "":
                     new_array = [
                     TextNode(text_before[1], text_type_text),
@@ -112,3 +110,12 @@ def split_node_link(old_nodes):
                 ]
             return_list.extend(new_array)
     return return_list  
+
+def text_to_textnodes(text):
+    nodes = [TextNode(text, text_type_text)]
+    nodes = split_nodes_delimiter(nodes, "**", text_type_bold)
+    nodes = split_nodes_delimiter(nodes, "*", text_type_italic)
+    nodes = split_nodes_delimiter(nodes, "`", text_type_code)
+    nodes = split_nodes_image(nodes)
+    nodes = split_nodes_link(nodes)
+    return nodes

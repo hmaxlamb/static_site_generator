@@ -38,3 +38,15 @@ def block_to_block_type(block):
     
     if block [:1] == "* " or block [:1] == "- ":
         return "unordered_list"
+    
+    if block [:2] == "1.":
+        split_blocks = block.split("\n")
+        line_count = len(split_blocks)
+        for i in range(1, (line_count + 1)):
+            if split_blocks[(i - 1)][:2] == f"{i}.":
+                continue
+            else:
+                return "paragraph"
+        return "ordered_list"
+    
+    return "paragraph"

@@ -53,6 +53,23 @@ class ParentNode(HTMLNode):
             leaf_strings += child.to_html()
 
         return f"<{self.tag}>{self.props_to_html()}{leaf_strings}</{self.tag}>"
-    
 
+def text_to_children(text):
+    textnodes = text_to_textnodes(text)
+    childrennodes = []
+    for textnode in textnodes:
+        childrennodes.append(text_node_to_html_node(textnode))
+    return childrennodes
 
+def markdown_to_html(markdown):
+    blocks = markdown_to_blocks(markdown)
+    parent_block_list = []
+    for block in blocks:
+        type = block_to_block_type(block)
+        childrennodes = text_to_children(block)
+        if type == 'code':
+            parent_block_list.append(ParentNode(pre, ParentNode(code, childrennodes)))
+        if type == "paragraph":
+            parent_block_list.append(p, childrennodes)
+        if type == "heading":
+            pass

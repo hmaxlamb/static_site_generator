@@ -26,7 +26,7 @@ def block_to_block_type(block):
         heading = "# "
         for i in range(2, 8):
             if block[:(i)] == heading:
-                return "heading"
+                return f"heading{(i - 1)}"
             else:
                 heading = "#" + heading
     

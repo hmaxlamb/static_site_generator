@@ -45,4 +45,31 @@ class TestBlockType(unittest.TestCase):
     def test_block_to_block_head1(self):
         block = "# Hello"
         self.assertEqual("heading", block_to_block_type(block))
+
+    def test_block_to_block_head2(self):
+        block = "## Hello"
+        self.assertEqual("heading", block_to_block_type(block))
+
+    def test_block_to_block_head3(self):
+        block = "### Hello"
+        self.assertEqual("heading", block_to_block_type(block))
+
+    def test_block_to_block_head4(self):
+        block = "#### Hello"
+        self.assertEqual("heading", block_to_block_type(block))
+
+    def test_block_to_block_head5(self):
+        block = "##### Hello"
+        self.assertEqual("heading", block_to_block_type(block))
+
+    def test_block_to_block_head6(self):
+        block = "###### Hello"
+        self.assertEqual("heading", block_to_block_type(block))
+
+    def test_block_to_block_head7(self):
+        block = "####### Hello"
+        self.assertEqual("paragraph", block_to_block_type(block))
+
+
+
     

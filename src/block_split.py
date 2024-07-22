@@ -36,7 +36,22 @@ def block_to_block_type(block):
     if block[:1] == ">":
         return "quote"
     
-    if block [:1] == "* " or block [:1] == "- ":
+    if block [:2] == "* ":
+        split_blocks = block.split("\n")
+        for line in split_blocks:
+            if line[:2] == "* ":
+                continue
+            else:
+                return "paragraph"
+        return "unordered_list"
+    
+    if block [:2] == "- ":
+        split_blocks = block.split("\n")
+        for line in split_blocks:
+            if line[:2] == "- ":
+                continue
+            else:
+                return "paragraph"
         return "unordered_list"
     
     if block [:2] == "1.":

@@ -19,3 +19,22 @@ def markdown_to_blocks(markdown):
         return_list.append(new_block)
 
     return return_list
+
+
+def block_to_block_type(block):
+    if block[:1] == "#":
+        heading = "# "
+        for i in range(2, 8):
+            if block[:(i)] == heading:
+                return "heading"
+            else:
+                heading = "#" + heading
+    
+    if block[:3] == "```" and block[-3:]:
+        return "code"
+    
+    if block[:1] == ">":
+        return "quote"
+    
+    if block [:1] == "* " or block [:1] == "- ":
+        return "unordered_list"

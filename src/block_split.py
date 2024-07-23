@@ -17,7 +17,7 @@ def markdown_to_blocks(markdown):
     for block in block_o_block_list:
         new_block = "\n".join(block)
         return_list.append(new_block)
-
+        
     return return_list
 
 

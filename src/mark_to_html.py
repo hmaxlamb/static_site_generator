@@ -21,6 +21,7 @@ from split_nodes import(
     extract_markdown_links,
     split_node_image,
     split_node_link,
+    text_to_textnodes,
 )
 
 from block_split import(

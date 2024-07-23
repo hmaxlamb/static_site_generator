@@ -157,7 +157,6 @@ class TestInlineMarkdown(unittest.TestCase):
         )
 
     def test_split_images(self):
-        pass
         node = TextNode(
             "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and another ![second image](https://i.imgur.com/3elNhQu.png)",
             text_type_text,
@@ -193,7 +192,6 @@ class TestInlineMarkdown(unittest.TestCase):
         )
 
     def test_text_to_textnodes(self):
-        pass
         nodes = text_to_textnodes(
             "This is **text** with an *italic* word and a `code block` and an ![image](https://i.imgur.com/zjjcJKZ.png) and a [link](https://boot.dev)"
         )

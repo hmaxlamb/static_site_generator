@@ -15,11 +15,12 @@ def split_node_delimiter(old_nodes, delimiter, text_type_del):
     for node in old_nodes:
         if node.text_type != text_type_text:
             new_node_list.append(node)
+            continue
         split_node = []
         split_text = node.text.split(delimiter)
         if len(split_text) % 2 == 0:
             raise ValueError("Invalid Markdown, delimeter not closed")
-        for i in range(len(split_text)):
+        for i in range(0, len(split_text)):
             if split_text[i] == "":
                 continue
             if i % 2 == 0:
@@ -36,86 +37,56 @@ def extract_markdown_links(text):
     return re.findall(r"\[(.*?)\]\((.*?)\)", text)
 
 def split_node_image(old_nodes):
-    return_list = []
-    for node in old_nodes:
-        pair_array = extract_markdown_images(node.text)
-        for i in range(len(pair_array)):
-            if i == 0:
-                sections = []
-                sections = node.text.split(f"![{pair_array[i][0]}]({pair_array[i][1]})", 1)
-                if sections[0] == "":
-                    new_array = [TextNode(pair_array[i][0], text_type_image, pair_array[i][1])]
-                else:
-                    new_array = [
-                        TextNode(sections[0], text_type_text),
-                        TextNode(pair_array[i][0], text_type_image, pair_array[i][1])
-                    ]
-            elif i != len(pair_array) - 1 and i != 0:
-                sections = []
-                sections = node.text.split(f"![{pair_array[i][0]}]({pair_array[i][1]})", 1)
-                text_before = sections[0].split(f"![{pair_array[(i-1)][0]}]({pair_array[(i-1)][1]})", 1)
-                new_array = [
-                    TextNode(text_before[1], text_type_text),
-                    TextNode(pair_array[i][0], text_type_image, pair_array[i][1])
-                ]
-            else:
-                sections = []
-                sections = node.text.split(f"![{pair_array[i][0]}]({pair_array[i][1]})", 1)
-                text_before = sections[0].split(f"![{pair_array[i-1][0]}]({pair_array[i-1][1]})", 1)
-                if len(sections) == 2 and sections[1] != "":
-                    new_array = [
-                    TextNode(text_before[1], text_type_text),
-                    TextNode(pair_array[i][0], text_type_image, pair_array[i][1]),
-                    TextNode(sections[1], text_type_text)
-                ]
-                else:
-                    new_array = [
-                    TextNode(text_before[1], text_type_text),
-                    TextNode(pair_array[i][0], text_type_image, pair_array[i][1])
-                ]
-            return_list.extend(new_array)
-    return return_list 
+    new_nodes = []
+    for old_node in old_nodes:
+        if old_node.text_type != text_type_text:
+            new_nodes.append(old_node)
+            continue
+        original_text = old_node.text
+        images = extract_markdown_images(original_text)
+        if len(images) == 0:
+            new_nodes.append(old_node)
+            continue
+        for image in images:
+            sections = original_text.split(f"![{image[0]}]({image[1]})", 1)
+            if len(sections) != 2:
+                raise ValueError("Invalid markdown, image section not closed")
+            if sections[0] != "":
+                new_nodes.append(TextNode(sections[0], text_type_text))
+            new_nodes.append(
+                TextNode(
+                    image[0],
+                    text_type_image,
+                    image[1],
+                )
+            )
+            original_text = sections[1]
+        if original_text != "":
+            new_nodes.append(TextNode(original_text, text_type_text))
+    return new_nodes
 
 def split_node_link(old_nodes):
-    return_list = []
-    for node in old_nodes:
-        pair_array = extract_markdown_links(node.text)
-        for i in range(len(pair_array)):
-            if i == 0:
-                sections = []
-                sections = node.text.split(f"[{pair_array[i][0]}]({pair_array[i][1]})", 1)
-                if sections[0] == "":
-                    new_array = [TextNode(pair_array[i][0], text_type_link, pair_array[i][1])]
-                else:
-                    new_array = [
-                        TextNode(sections[0], text_type_text),
-                        TextNode(pair_array[i][0], text_type_link, pair_array[i][1])
-                    ]
-            elif i != len(pair_array) - 1 and i != 0:
-                sections = []
-                sections = node.text.split(f"[{pair_array[i][0]}]({pair_array[i][1]})", 1)
-                text_before = sections[0].split(f"[{pair_array[(i-1)][0]}]({pair_array[(i-1)][1]})", 1)
-                new_array = [
-                    TextNode(text_before[1], text_type_text),
-                    TextNode(pair_array[i][0], text_type_link, pair_array[i][1])
-                ]
-            else:
-                sections = []
-                sections = node.text.split(f"[{pair_array[i][0]}]({pair_array[i][1]})", 1)
-                text_before = sections[0].split(f"[{pair_array[i-1][0]}]({pair_array[i-1][1]})", 1)
-                if len(sections) == 2 and sections[1] != "":
-                    new_array = [
-                    TextNode(text_before[1], text_type_text),
-                    TextNode(pair_array[i][0], text_type_link, pair_array[i][1]),
-                    TextNode(sections[1], text_type_text)
-                ]
-                else:
-                    new_array = [
-                    TextNode(text_before[1], text_type_text),
-                    TextNode(pair_array[i][0], text_type_link, pair_array[i][1])
-                ]
-            return_list.extend(new_array)
-    return return_list
+    new_nodes = []
+    for old_node in old_nodes:
+        if old_node.text_type != text_type_text:
+            new_nodes.append(old_node)
+            continue
+        original_text = old_node.text
+        links = extract_markdown_links(original_text)
+        if len(links) == 0:
+            new_nodes.append(old_node)
+            continue
+        for link in links:
+            sections = original_text.split(f"[{link[0]}]({link[1]})", 1)
+            if len(sections) != 2:
+                raise ValueError("Invalid markdown, link section not closed")
+            if sections[0] != "":
+                new_nodes.append(TextNode(sections[0], text_type_text))
+            new_nodes.append(TextNode(link[0], text_type_link, link[1]))
+            original_text = sections[1]
+        if original_text != "":
+            new_nodes.append(TextNode(original_text, text_type_text))
+    return new_nodes
 
 def text_to_textnodes(text):
     nodes = [TextNode(text, text_type_text)]

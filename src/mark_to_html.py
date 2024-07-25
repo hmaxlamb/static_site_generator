@@ -43,6 +43,22 @@ def block_to_leaf(block):
         nodelist.append(ParentNode("li", text_to_children(line)))
     return nodelist
 
+def strip_block_header(block, *args):
+    lines = block.split("\n")
+    new_lines = []
+    for line in lines:
+        new_line = line
+        for arg in args:
+            if type(arg) == list:
+                for item in arg:
+                    if new_line[:len(item)] == item:
+                        new_line = new_line[len(item):]
+            elif new_line[:len(arg)] == arg:
+                new_line = new_line[len(arg):]
+        new_lines.append(new_line) 
+    new_block = "\n".join(new_lines)
+    return new_block
+    
 
 def markdown_to_html(markdown):
     blocks = markdown_to_blocks(markdown)
@@ -53,28 +69,39 @@ def markdown_to_html(markdown):
             parent_block_list.append(ParentNode("pre", ParentNode("code", text_to_children(block))))
 
         if type == "paragraph":
-            parent_block_list.append("p", text_to_children(block))
+            parent_block_list.append(ParentNode("p", text_to_children(block)))
 
         if type == "quote":
-            parent_block_list.append(ParentNode("blockquote"))
+            parent_block_list.append(ParentNode("blockquote", text_to_children(strip_block_header(block, "> "))))
 
         if type == "unordered_list":
-            parent_block_list.append(ParentNode("ul", block_to_leaf(block)))
+            parent_block_list.append(ParentNode("ul", block_to_leaf(strip_block_header(block, "* ", "- "))))
 
         if type == "ordered_list":
-            parent_block_list.append(ParentNode("ol", block_to_leaf(block)))
+            lines = block.split("\n")
+            del_list = []
+            for i in range(len(lines)):
+                del_list.append(f"{i + 1}. ")
+
+            parent_block_list.append(ParentNode("ol", block_to_leaf(strip_block_header(block, del_list))))
 
         if type == "heading1":
-            parent_block_list.append(ParentNode("h1", text_to_children(block)))
+            block = block[2:]
+            parent_block_list.append(ParentNode("h1", text_to_children(strip_block_header(block,))))
         if type == "heading2":
+            block = block[3:]
             parent_block_list.append(ParentNode("h2", text_to_children(block)))
         if type == "heading3":
+            block = block[4:]
             parent_block_list.append(ParentNode("h3", text_to_children(block)))
         if type == "heading4":
+            block = block[5:]
             parent_block_list.append(ParentNode("h4", text_to_children(block)))
         if type == "heading5":
+            block = block[6:]
             parent_block_list.append(ParentNode("h5", text_to_children(block)))
         if type == "heading6":
+            block = block[7:]
             parent_block_list.append(ParentNode("h6", text_to_children(block)))
     
     return ParentNode("div", parent_block_list)

@@ -47,7 +47,6 @@ This is the same paragraph on a new line
 * with items
 """
         blocks = markdown_to_blocks(md)
-        print(blocks)
         self.assertEqual(
             blocks,
             [
@@ -78,4 +77,39 @@ This is the same paragraph on a new line
                 "This is another paragraph with *italic* text and `code` here\nThis is the same paragraph on a new line",
                 "* This is a list\n* with items",
             ],
+        )
+
+    def test_headings(self):
+        md = """
+# this is an h1
+
+this is paragraph text
+
+## this is an h2
+"""
+
+        node = markdown_to_html(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><h1>this is an h1</h1><p>this is paragraph text</p><h2>this is an h2</h2></div>",
+        )
+
+    def test_lists(self):
+        md = """
+- This is a list
+- with items
+- and *more* items
+
+1. This is an `ordered` list
+2. with items
+3. and more items
+
+"""
+
+        node = markdown_to_html(md)
+        html = node.to_html()
+        self.assertEqual(
+            html,
+            "<div><ul><li>This is a list</li><li>with items</li><li>and <i>more</i> items</li></ul><ol><li>This is an <code>ordered</code> list</li><li>with items</li><li>and more items</li></ol></div>",
         )

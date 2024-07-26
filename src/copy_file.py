@@ -3,13 +3,13 @@ import shutil
 
 def map_files(dir, new_dir, i = 1):
     if i == 1:
-        shutil.rmtree(f"{new_dir}/*")
+        shutil.rmtree(new_dir)
+        os.mkdir(new_dir)
     dir_content = os.listdir(dir)
     for item in dir_content:
-        if os.path.isfile(item):
-            shutil.copy(f"{dir}", f"{new_dir}")
-            print(f"{dir}/{item}")
-        if os.path.isfile(item) == False:
-            shutil.copy(f"{dir}", f"{new_dir}")
-            map_files(f"{dir}/{item}", f"{new_dir}/{item}")
+        if os.path.isfile(os.path.join(dir, item)) == True:
+            shutil.copy(f"{dir}/{item}", f"{new_dir}/{item}")
+        if os.path.isfile(os.path.join(dir, item)) == False:
+            os.mkdir(os.path.join(new_dir, item))
+            map_files(os.path.join(dir, item), os.path.join(new_dir, item), i + 1)
     return

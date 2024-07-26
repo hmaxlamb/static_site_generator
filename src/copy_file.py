@@ -13,3 +13,11 @@ def map_files(dir, new_dir, i = 1):
             os.mkdir(os.path.join(new_dir, item))
             map_files(os.path.join(dir, item), os.path.join(new_dir, item), i + 1)
     return
+
+def extract_title(markdown):
+    lines = markdown.split("\n")
+    for line in lines:
+        if line[:2] == "# ":
+            new_line = line[2:]
+            return new_line.strip(" ")
+    raise ValueError("Header in place")

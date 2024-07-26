@@ -66,7 +66,7 @@ def markdown_to_html(markdown):
     for block in blocks:
         type = block_to_block_type(block)
         if type == 'code':
-            parent_block_list.append(ParentNode("pre", ParentNode("code", text_to_children(block))))
+            parent_block_list.append(ParentNode("pre", [ParentNode("code", text_to_children(block))]))
 
         if type == "paragraph":
             parent_block_list.append(ParentNode("p", text_to_children(block)))

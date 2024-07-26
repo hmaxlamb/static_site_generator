@@ -1,6 +1,8 @@
 import os
 import shutil
 
+from mark_to_html import markdown_to_html
+
 def map_files(dir, new_dir, i = 1):
     if i == 1:
         shutil.rmtree(new_dir)
@@ -21,3 +23,17 @@ def extract_title(markdown):
             new_line = line[2:]
             return new_line.strip(" ")
     raise ValueError("Header in place")
+
+def generate_page(from_path, template_path, dest_path):
+    file1 = open(from_path)
+    mdpage = file1.read()
+    file1.close()
+    file2 = open(template_path)
+    temp = file2.read()
+    file2.close()
+    htlm_content = markdown_to_html(mdpage)
+    title = extract_title(mdpage)
+    complete_html = temp.replace("{{ Title }}", title).replace("{{ Content }}", htlm_content.to_html())
+    new_file_path = os.path.join(dest_path, os.path.basename(from_path)).replace(".md", ".html")
+    new_file = open(new_file_path, "w")
+    new_file.write(complete_html)

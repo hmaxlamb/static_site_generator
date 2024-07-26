@@ -1,7 +1,9 @@
 from htmlnode import HTMLNode
 
+from copy_file import map_files
+
 def main():
-    testnode = HTMLNode(None, None, None, {"href": "https://www.google.com", "target": "_blank"})
-    print(testnode.props_to_html())
+    map_files("static", "public")
+    
 
 main()
